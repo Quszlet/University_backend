@@ -1,8 +1,8 @@
 package com.example.backend_university.controllers;
 
-import com.example.backend_university.dto.LoginRequest;
-import com.example.backend_university.dto.MessageResponse;
-import com.example.backend_university.dto.SignupRequest;
+import com.example.backend_university.request_response.LoginRequest;
+import com.example.backend_university.request_response.MessageResponse;
+import com.example.backend_university.request_response.SignupRequest;
 import com.example.backend_university.exceptions.UserRegistrationException;
 import com.example.backend_university.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> loginUser(@RequestBody @Valid LoginRequest loginRequest) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
 
         return ResponseEntity.ok(new MessageResponse(authService.loginUser(loginRequest)));
     }

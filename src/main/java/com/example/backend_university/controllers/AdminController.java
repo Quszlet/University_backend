@@ -1,6 +1,6 @@
 package com.example.backend_university.controllers;
 
-import com.example.backend_university.dto.UpdateRequest;
+import com.example.backend_university.request_response.UpdateRequest;
 import com.example.backend_university.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

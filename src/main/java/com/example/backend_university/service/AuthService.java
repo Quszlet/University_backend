@@ -1,11 +1,11 @@
 package com.example.backend_university.service;
 
 import com.example.backend_university.config.jwt.JwtUtil;
-import com.example.backend_university.dao.UserDao;
-import com.example.backend_university.dto.LoginRequest;
-import com.example.backend_university.dto.MessageResponse;
-import com.example.backend_university.dto.ProfileInfoResponse;
-import com.example.backend_university.dto.SignupRequest;
+import com.example.backend_university.repository.UserDao;
+import com.example.backend_university.request_response.LoginRequest;
+import com.example.backend_university.request_response.MessageResponse;
+import com.example.backend_university.request_response.ProfileInfoResponse;
+import com.example.backend_university.request_response.SignupRequest;
 import com.example.backend_university.exceptions.UserRegistrationException;
 import com.example.backend_university.models.ERole;
 import com.example.backend_university.models.User;

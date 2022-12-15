@@ -1,6 +1,6 @@
 package com.example.backend_university.service;
 
-import com.example.backend_university.dao.UserDao;
+import com.example.backend_university.repository.UserDao;
 import com.example.backend_university.models.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

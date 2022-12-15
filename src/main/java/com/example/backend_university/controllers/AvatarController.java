@@ -1,7 +1,7 @@
 package com.example.backend_university.controllers;
 
-import com.example.backend_university.dao.UserDao;
-import com.example.backend_university.dto.MessageResponse;
+import com.example.backend_university.repository.UserDao;
+import com.example.backend_university.request_response.MessageResponse;
 import com.example.backend_university.models.User;
 import com.example.backend_university.service.UserDetailsImpl;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/avatar")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://127.0.0.1:5500", allowCredentials = "true")
 public class AvatarController {
 
     private final UserDao userDao;

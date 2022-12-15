@@ -1,9 +1,9 @@
 package com.example.backend_university.service;
 
-import com.example.backend_university.dao.UserDao;
-import com.example.backend_university.dto.MessageResponse;
-import com.example.backend_university.dto.UpdateRequest;
-import com.example.backend_university.dto.UserInfoResponse;
+import com.example.backend_university.repository.UserDao;
+import com.example.backend_university.request_response.MessageResponse;
+import com.example.backend_university.request_response.UpdateRequest;
+import com.example.backend_university.request_response.UserInfoResponse;
 import com.example.backend_university.models.ERole;
 import com.example.backend_university.models.User;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class AdminService {
         user.setLastName(body.getLastName());
         user.setEmail(body.getEmail());
         userDao.save(user);
-        return new MessageResponse("Данные пользователя с id = " + id + " изменены!");
+        return new MessageResponse("Данные пользователя с id = " + id.toString() + " изменены!");
     }
 
     public MessageResponse raiseUser(Long id, String role) {
