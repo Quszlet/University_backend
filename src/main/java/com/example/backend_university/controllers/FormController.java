@@ -1,5 +1,6 @@
 package com.example.backend_university.controllers;
 
+import com.example.backend_university.exceptions.FormBlankInput;
 import com.example.backend_university.exceptions.FormFileIsNotSupported;
 import com.example.backend_university.exceptions.FormFileLengthExceprion;
 import com.example.backend_university.request_response.FormRequest;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 
@@ -24,7 +26,7 @@ public class FormController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<?> send_form(@ModelAttribute FormRequest request) {
+    public ResponseEntity<?> send_form(@ModelAttribute @Valid FormRequest request) throws FormBlankInput {
         try {
             return ResponseEntity.ok(formService.save_form(request));
         } catch (FormFileLengthExceprion | IOException | FormFileIsNotSupported e){
