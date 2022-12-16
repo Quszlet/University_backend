@@ -1,6 +1,7 @@
 package com.example.backend_university.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users",
@@ -25,6 +26,16 @@ public class User {
     private String avatarFilePath;
     @Column(name = "role")
     private String role;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Form> forms;
+
+    public List<Form> getForms() {
+        return forms;
+    }
+
+    public void setForms(List<Form> forms) {
+        this.forms = forms;
+    }
 
     public User(String firstName, String lastName, String email, String password, String role) {
         this.firstName = firstName;

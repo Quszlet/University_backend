@@ -21,7 +21,12 @@ public class Form {
     @Column(name = "file_second_path")
     private String file_second_path;
 
-    public Form(String first_name, String last_name, String email, String full_text, String file_first_path, String file_second_path) {
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Form(String first_name, String last_name, String email, String full_text,
+                String file_first_path, String file_second_path) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
@@ -30,7 +35,8 @@ public class Form {
         this.file_second_path = file_second_path;
     }
 
-    public Form(Long id, String first_name, String last_name, String email, String full_text, String file_first_path, String file_second_path) {
+    public Form(Long id, String first_name, String last_name, String email,
+                String full_text, String file_first_path, String file_second_path) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -41,6 +47,14 @@ public class Form {
     }
 
     public Form() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {

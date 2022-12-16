@@ -7,7 +7,6 @@ public class FormRequest {
     private String last_name;
     private String email;
     private String full_text;
-
     private MultipartFile[] files;
 
     public String getFirst_name() {

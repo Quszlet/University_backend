@@ -6,6 +6,7 @@ import com.example.backend_university.request_response.FormRequest;
 import com.example.backend_university.request_response.MessageResponse;
 import com.example.backend_university.service.FormService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -33,7 +34,17 @@ public class FormController {
     @GetMapping("/get")
     public ResponseEntity<?> get_forms(){
         try{
-            return ResponseEntity.ok(formService.getForms());
+            return ResponseEntity.ok(formService.getFormsUser());
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get/all")
+    @PreAuthorize("hasRole('ROLE_MODERATOR') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> get_formsAll(){
+        try{
+            return ResponseEntity.ok(formService.getAllForms());
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
