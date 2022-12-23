@@ -9,13 +9,22 @@ import com.example.backend_university.repository.UserDao;
 import com.example.backend_university.request_response.FormRequest;
 import com.example.backend_university.request_response.FormResponse;
 import com.example.backend_university.request_response.MessageResponse;
+import com.example.backend_university.request_response.UpdateFormRequest;
+import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,27 +41,23 @@ public class FormService {
     }
 
     public MessageResponse save_form(FormRequest request) throws FormFileLengthExceprion, IOException, FormFileIsNotSupported {
-        MultipartFile[] files = request.getFiles();
-        String[] filePath = {"", ""};
-
-        if (files.length > 2) {
-            throw new FormFileLengthExceprion("Количество файлов больше двух");
-        }
-        for (int i = 0; i < files.length; i++) {
-            String fileName = files[i].getOriginalFilename();
-            if (fileName.equals("")){
-                break;
-            }
-            if (files[i].getContentType().equalsIgnoreCase("image/jpg") ||
-                    files[i].getContentType().equalsIgnoreCase("image/png") ||
-                    files[i].getContentType().equalsIgnoreCase("image/jpeg") ||
-                    files[i].getContentType().equalsIgnoreCase("application/pdf") ||
-                    files[i].getContentType().equalsIgnoreCase("application/vnd.openxmlformats" +
+        MultipartFile files = request.getFile();
+        String fileName = files.getOriginalFilename();
+        byte[] file_bytes = null;
+        String newName = "";
+        if (!fileName.equals("")){
+            if (files.getContentType().equalsIgnoreCase("image/jpg") ||
+                    files.getContentType().equalsIgnoreCase("image/png") ||
+                    files.getContentType().equalsIgnoreCase("image/jpeg") ||
+                    files.getContentType().equalsIgnoreCase("application/pdf") ||
+                    files.getContentType().equalsIgnoreCase("application/vnd.openxmlformats" +
                             "-officedocument.wordprocessingml.document")) {
-                filePath[i] = FOLDER_PATH + UUID.randomUUID() + fileName;
-                files[i].transferTo(new File(filePath[i]));
+                newName = UUID.randomUUID() + fileName;
+                String filePath = FOLDER_PATH + newName;
+                files.transferTo(new File(filePath));
+                file_bytes = FileUtils.readFileToByteArray(new File(filePath));
             } else {
-                throw new FormFileIsNotSupported("У некоторых файлов не допустимый формат");
+                throw new FormFileIsNotSupported("У файла не допустимый формат");
             }
         }
 
@@ -60,10 +65,40 @@ public class FormService {
                 .getAuthentication().getPrincipal();
         User user = userDao.findById(userDetails.getId()).get();
         Form form = new Form(request.getFirst_name(), request.getLast_name(), request.getEmail(),
-                request.getFull_text(), filePath[0], filePath[1]);
-        form.setUser(user);
+                request.getFull_text(), newName, file_bytes, files.getContentType(), user);
         formDao.save(form);
-        return new MessageResponse("Заявка сохранена");
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/form/download/")
+                .path(newName).toUriString();
+        return new MessageResponse(fileDownloadUri);
+    }
+
+    public ResponseEntity<?> download_file(Long id){
+        Form form = formDao.findById(id).get();
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + form.getNameFile() + "\"")
+                .body(form.getFile());
+    }
+
+    public MessageResponse update_form(Long id, UpdateFormRequest request){
+        Form form = formDao.findById(id).get();
+        form.setFirst_name(request.getFirst_name());
+        form.setLast_name(request.getLast_name());
+        form.setEmail(request.getEmail());
+        form.setFull_text(request.getFull_text());
+        formDao.save(form);
+        return new MessageResponse("Данные заявки с id = " + id.toString() + " изменены!");
+    }
+
+    public MessageResponse deleteForm(Long id) {
+        formDao.deleteById(id);
+        return new MessageResponse(id.toString());
+    }
+
+    public FormResponse getOneForm(Long id){
+        Form form = formDao.findById(id).get();
+        return new FormResponse(form.getType_file());
     }
 
     public List<FormResponse> getFormsUser(){
@@ -74,7 +109,7 @@ public class FormService {
         List<FormResponse> AllForms = new ArrayList<>();
         for (Form form : forms) {
             AllForms.add(new FormResponse(form.getId(), form.getFirst_name(), form.getLast_name(), form.getEmail(),
-                    form.getFull_text(), form.getFile_first_path(), form.getFile_second_path()));
+                    form.getFull_text()));
         }
         return AllForms;
     }
@@ -84,7 +119,7 @@ public class FormService {
         List<FormResponse> AllForms = new ArrayList<>();
         for (Form form : forms) {
             AllForms.add(new FormResponse(form.getId(), form.getFirst_name(), form.getLast_name(), form.getEmail(),
-                    form.getFull_text(), form.getFile_first_path(), form.getFile_second_path()));
+                    form.getFull_text()));
         }
         return AllForms;
     }

@@ -16,7 +16,7 @@ public class FormRequest {
     private String email;
     @NotBlank(message = "Это поле должно быть заполнено")
     private String full_text;
-    private MultipartFile[] files;
+    private MultipartFile file;
 
     public String getFirst_name() {
         return first_name;
@@ -42,12 +42,12 @@ public class FormRequest {
         this.email = email;
     }
 
-    public MultipartFile[] getFiles() {
-        return files;
+    public MultipartFile getFile() {
+        return file;
     }
 
-    public void setFiles(MultipartFile[] files) {
-        this.files = files;
+    public void setFile(MultipartFile files) {
+        this.file = files;
     }
 
     public String getFull_text() {

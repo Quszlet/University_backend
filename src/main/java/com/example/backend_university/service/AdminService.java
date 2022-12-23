@@ -2,7 +2,7 @@ package com.example.backend_university.service;
 
 import com.example.backend_university.repository.UserDao;
 import com.example.backend_university.request_response.MessageResponse;
-import com.example.backend_university.request_response.UpdateRequest;
+import com.example.backend_university.request_response.UpdateUserRequest;
 import com.example.backend_university.request_response.UserInfoResponse;
 import com.example.backend_university.models.ERole;
 import com.example.backend_university.models.User;
@@ -35,7 +35,7 @@ public class AdminService {
         return new MessageResponse(id.toString());
     }
 
-    public MessageResponse update_user(Long id, UpdateRequest body){
+    public MessageResponse update_user(Long id, UpdateUserRequest body){
         User user = userDao.findById(id).get();
         user.setFirstName(body.getFirstName());
         user.setLastName(body.getLastName());

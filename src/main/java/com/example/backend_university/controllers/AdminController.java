@@ -1,6 +1,6 @@
 package com.example.backend_university.controllers;
 
-import com.example.backend_university.request_response.UpdateRequest;
+import com.example.backend_university.request_response.UpdateUserRequest;
 import com.example.backend_university.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ public class AdminController {
 
     @PutMapping("/change/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> userUpdate(@PathVariable Long id, @RequestBody @Valid UpdateRequest request) {
+    public ResponseEntity<?> userUpdate(@PathVariable Long id, @RequestBody @Valid UpdateUserRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.update_user(id, request));
     }
 }

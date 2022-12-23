@@ -16,34 +16,26 @@ public class Form {
     private String email;
     @Column(name = "full_text")
     private String full_text;
-    @Column(name = "file_first_path")
-    private String file_first_path;
-    @Column(name = "file_second_path")
-    private String file_second_path;
-
+    @Column(name = "nameFile")
+    private String nameFile;
+    @Column(name = "file")
+    @Lob
+    private byte[]  file;
+    @Column(name = "type_file")
+    private String type_file;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
     public Form(String first_name, String last_name, String email, String full_text,
-                String file_first_path, String file_second_path) {
+                String file_name, byte[] file, String type_file, User user) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.full_text = full_text;
-        this.file_first_path = file_first_path;
-        this.file_second_path = file_second_path;
-    }
-
-    public Form(Long id, String first_name, String last_name, String email,
-                String full_text, String file_first_path, String file_second_path) {
-        this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.email = email;
-        this.full_text = full_text;
-        this.file_first_path = file_first_path;
-        this.file_second_path = file_second_path;
+        this.nameFile = file_name;
+        this.type_file = type_file;
+        this.file = file;
+        this.user = user;
     }
 
     public Form() {
@@ -97,19 +89,27 @@ public class Form {
         this.full_text = full_text;
     }
 
-    public String getFile_first_path() {
-        return file_first_path;
+    public byte[] getFile() {
+        return file;
     }
 
-    public void setFile_first_path(String file_first_path) {
-        this.file_first_path = file_first_path;
+    public void setFile(byte[] file) {
+        this.file = file;
     }
 
-    public String getFile_second_path() {
-        return file_second_path;
+    public String getNameFile() {
+        return nameFile;
     }
 
-    public void setFile_second_path(String file_second_path) {
-        this.file_second_path = file_second_path;
+    public void setNameFile(String nameFile) {
+        this.nameFile = nameFile;
+    }
+
+    public String getType_file() {
+        return type_file;
+    }
+
+    public void setType_file(String type_file) {
+        this.type_file = type_file;
     }
 }

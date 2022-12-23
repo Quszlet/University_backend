@@ -6,18 +6,19 @@ public class FormResponse {
     private String last_name;
     private String email;
     private String full_text;
-    private String file_first_path;
-    private String file_second_path;
+    private byte[] File;
+    private String typeFile;
 
-    public FormResponse(Long id, String first_name, String last_name,
-                        String email, String full_text, String file_first_path, String file_second_path) {
+    public FormResponse(Long id, String first_name, String last_name, String email, String full_text) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
         this.full_text = full_text;
-        this.file_first_path = file_first_path;
-        this.file_second_path = file_second_path;
+    }
+
+    public FormResponse(String typeFile) {
+        this.typeFile = typeFile;
     }
 
     public FormResponse() {
@@ -63,19 +64,19 @@ public class FormResponse {
         this.full_text = full_text;
     }
 
-    public String getFile_first_path() {
-        return file_first_path;
+    public byte[] getFile() {
+        return File;
     }
 
-    public void setFile_first_path(String file_first_path) {
-        this.file_first_path = file_first_path;
+    public void setFile(byte[] file) {
+        File = file;
     }
 
-    public String getFile_second_path() {
-        return file_second_path;
+    public String getTypeFile() {
+        return typeFile;
     }
 
-    public void setFile_second_path(String file_second_path) {
-        this.file_second_path = file_second_path;
+    public void setTypeFile(String typeFile) {
+        this.typeFile = typeFile;
     }
 }

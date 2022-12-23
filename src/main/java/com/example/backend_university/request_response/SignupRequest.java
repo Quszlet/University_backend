@@ -13,7 +13,7 @@ public class SignupRequest {
     @NotBlank(message = "Это поле должно быть заполнено")
     @Email(message = "Неправильная почта")
     private String email;
-    @Size(min = 3, max = 6, message = "Пароль должен содержать от 3 до 6 символов")
+    @Size(min = 3, max = 9, message = "Пароль должен содержать от 3 до 9 символов")
     private String password;
     private Set<String> roles;
 
