@@ -40,7 +40,7 @@ public class FormService {
         this.userDao = userDao;
     }
 
-    public MessageResponse save_form(FormRequest request) throws FormFileLengthExceprion, IOException, FormFileIsNotSupported {
+    public ResponseEntity<?> save_form(FormRequest request) throws FormFileLengthExceprion, IOException, FormFileIsNotSupported {
         MultipartFile files = request.getFile();
         String fileName = files.getOriginalFilename();
         byte[] file_bytes = null;
@@ -57,7 +57,7 @@ public class FormService {
                 files.transferTo(new File(filePath));
                 file_bytes = FileUtils.readFileToByteArray(new File(filePath));
             } else {
-                throw new FormFileIsNotSupported("У файла не допустимый формат");
+                return ResponseEntity.badRequest().body(new MessageResponse("У файла не допустимый формат"));
             }
         }
 
@@ -70,7 +70,7 @@ public class FormService {
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/form/download/")
                 .path(newName).toUriString();
-        return new MessageResponse(fileDownloadUri);
+        return ResponseEntity.ok(fileDownloadUri);
     }
 
     public ResponseEntity<?> download_file(Long id){

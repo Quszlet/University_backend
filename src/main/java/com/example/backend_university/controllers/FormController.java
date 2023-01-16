@@ -33,7 +33,7 @@ public class FormController {
     @PostMapping("/send")
     public ResponseEntity<?> send_form(@ModelAttribute @Valid FormRequest request) throws FormBlankInput {
         try {
-            return ResponseEntity.ok(formService.save_form(request));
+            return formService.save_form(request);
         } catch (FormFileLengthExceprion | IOException | FormFileIsNotSupported e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

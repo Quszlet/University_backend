@@ -3,6 +3,7 @@ package com.example.backend_university.request_response;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 
@@ -13,6 +14,7 @@ public class FormRequest {
     @NotBlank(message = "Это поле должно быть заполнено")
     private String last_name;
     @NotBlank(message = "Это поле должно быть заполнено")
+    @Email(message = "Неправильная почта")
     private String email;
     @NotBlank(message = "Это поле должно быть заполнено")
     private String full_text;
