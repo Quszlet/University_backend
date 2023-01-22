@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/signin").permitAll()
                 .antMatchers("/auth/signup").permitAll()
                 .antMatchers("/form/send").permitAll()
+                .antMatchers("/news/get").permitAll()
                 .antMatchers("/form/get").permitAll()
                 .anyRequest().authenticated().and().exceptionHandling()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

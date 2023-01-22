@@ -69,16 +69,27 @@ public class NewsService {
     }
 
     public ResponseEntity<?> getNews(){
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-        User user = userDao.findById(userDetails.getId()).get();
-        List<News> news= newsDao.findAll();
-        List<NewsResponse> AllNews = new ArrayList<>();
-        for (News obj : news) {
-            AllNews.add(new NewsResponse(obj.getId(), obj.getTitle(), obj.getText(),
-                    obj.getCreation_data(), obj.getPath_image(), user.getRole()));
+        try{
+            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+            User user = userDao.findById(userDetails.getId()).get();
+            List<News> news= newsDao.findAll();
+            List<NewsResponse> AllNews = new ArrayList<>();
+            for (News obj : news) {
+                AllNews.add(new NewsResponse(obj.getId(), obj.getTitle(), obj.getText(),
+                        obj.getCreation_data(), obj.getPath_image(), user.getRole()));
+            }
+            return ResponseEntity.ok(AllNews);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            List<News> news= newsDao.findAll();
+            List<NewsResponse> AllNews = new ArrayList<>();
+            for (News obj : news) {
+                AllNews.add(new NewsResponse(obj.getId(), obj.getTitle(), obj.getText(),
+                        obj.getCreation_data(), obj.getPath_image(), "ROLE_USER"));
+            }
+            return ResponseEntity.ok(AllNews);
         }
-        return ResponseEntity.ok(AllNews);
     }
 
     public ResponseEntity<?> updateNews(Long id, NewsRequest newsRequest) throws FormFileIsNotSupported, FileIsNull {
